@@ -41,7 +41,7 @@ export interface Provider {
     connectCustomerToAgent: (by: By, agentAddress: builder.IAddress) => Conversation;
     connectCustomerToBot: (by: By) => boolean;
     queueCustomerForAgent: (by: By) => boolean;
-    
+
     // Get
     getConversation: (by: By, customerAddress?: builder.IAddress) => Conversation;
     currentConversations: () => Conversation[];
@@ -77,19 +77,20 @@ export class Handoff {
         next: Function
     ) {
         if (this.isAgent(session)) {
-            this.routeAgentMessage(session)
+            this.routeAgentMessage(session, next)
         } else {
             this.routeCustomerMessage(session, next);
         }
     }
 
-    private routeAgentMessage(session: builder.Session) {
+    private routeAgentMessage(session: builder.Session, next: Function) {
+
         const message = session.message;
         const conversation = this.getConversation({ agentConversationId: message.address.conversation.id });
 
         // if the agent is not in conversation, no further routing is necessary
         if (!conversation)
-            return;
+            return next();
 
         if (conversation.state !== ConversationState.Agent) {
             // error state -- should not happen
@@ -97,7 +98,10 @@ export class Handoff {
             console.log("Shouldn't be in this state - agent should have been cleared out");
             return;
         }
-        // send text that agent typed to the customer they are in conversation with
+        // send text that agent typed to the customer they are in conversation with unless agent wants to disconnect
+        if (session.message.text === 'disconnect') {
+            return next();
+        }
         this.bot.send(new builder.Message().address(conversation.customer).text(message.text));
     }
 
@@ -144,7 +148,7 @@ export class Handoff {
 
     public getConversation = (by: By, customerAddress?: builder.IAddress) =>
         this.provider.getConversation(by, customerAddress);
-    
+
     public currentConversations = () =>
         this.provider.currentConversations();
 
