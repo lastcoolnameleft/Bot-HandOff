@@ -125,14 +125,20 @@ For now, the easiest thing to do is to add your bot logic to the existing bot.ts
 
 * Linux:
 ```
-MICROSOFT_APP_ID=app_id MICROSOFT_APP_PASSWORD=app_password node dist/bot.js
+export MICROSOFT_APP_ID=app_id
+export MICROSOFT_APP_PASSWORD=app_password
+export QNASUBSCRIPTIONKEY=qna_subscriptionkey
+export QNAKNOWLEDGEBASE_ID=qna_knowledge_base_id
+node dist/app.js
 ```
 
 * Microsoft:
 ```
 $env:MICROSOFT_APP_ID="app_id"
 $env:MICROSOFT_APP_PASSWORD="app_password"
-node dist/bot.js
+$env:QNASUBSCRIPTIONKEY="qna_subscriptionkey"
+$env:QNAKNOWLEDGEBASE_ID="qna_knowledge_base_id"
+node dist/app.js
 ```
     
 2. Create an ngrok public endpoint [see here for details](https://github.com/Microsoft-DXEIP/Tokyo-Hack-Docs#1-with-your-app-still-running-on-localhost-bind-the-localhost-deployment-with-ngrok-we-will-need-this-url-for-registering-our-bot)
