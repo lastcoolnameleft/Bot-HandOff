@@ -62,6 +62,7 @@ var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({
 	defaultMessage: 'No good match in FAQ.',
 	qnaThreshold: 0.5});
 
+
 bot.dialog('/', BasicQnAMakerDialog);
 
 bot.on("event", function (event) {

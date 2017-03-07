@@ -7,8 +7,8 @@
   "scripts": {
     "postinstall": "tsc",
     "build": "tsc",
-    "watch": "tsc -w",
-    "nodewatch": "nodemon dist/app.js",
+    "build-watch": "tsc -w",
+    "run-watch": "nodemon dist/app.js",
     "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
